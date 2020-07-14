@@ -1,8 +1,8 @@
 package main;
 
 public class Map {
-	private Layer bgLayer;
-	private Layer objLayer;
+	private BGLayer bgLayer;
+	private ObjLayer objLayer;
 	private int width;
 	private int height;
 	public static final int nullValue=-1;
@@ -10,8 +10,8 @@ public class Map {
 	public Map(int width,int height) {
 		this.width=width;
 		this.height=height;
-		bgLayer=new Layer(width,height);
-		objLayer=new Layer(width,height,-1);
+		bgLayer=new BGLayer(width,height,60);
+		objLayer=new ObjLayer(width,height);
 	}
 	//cameraX,cameraY is the position of top left hand corner
 	public int[][] display(int cameraX,int cameraY,int size,int index){
@@ -24,15 +24,20 @@ public class Map {
 			return null;
 		}
 	}
-	public void set(int x,int y,int value,int index) {
-		Layer select;
-		if(index==0)
-			select=bgLayer;
-		else if(index==1)
-			select=objLayer;
-		else
-			return;
-		select.set(x, y, value);
+	public void setBG(int x,int y,int value) {
+		bgLayer.set(x,y,value);
 	}
-	
+	public void setObj(ObjTile t) {
+		objLayer.set(t);
+	}
+	public void move(int x,int y,int newX,int newY) {
+		objLayer.move(x, y, newX, newY);
+	}
+	public ObjLayer getObjectLayer() {return objLayer;}
+	public boolean canMove(int x,int y) {
+		if(objLayer.outOfBound(x, y))
+			return false;
+		else
+			return bgLayer.canPass(x, y)&&objLayer.canPass(x, y);
+	}
 }

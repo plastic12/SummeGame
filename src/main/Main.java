@@ -27,9 +27,10 @@ public class Main extends Application{
 		}
 	}
 	public static Map map;
-	public static int cameraX=-5;
-	public static int cameraY=-5;
+	public static IntegerProperty cameraX=new SimpleIntegerProperty(0) ;
+	public static IntegerProperty cameraY=new SimpleIntegerProperty(0);
 	public static Party party;
+	//public static Party party;
 	
 	
 	
@@ -40,10 +41,27 @@ public class Main extends Application{
     	log.append("start");
     	log.flush();
     	Library.load();
-    	party=new Party();
+    	party=new Party(0,0,0);
     	map=new Map(50,50);
+    	map.setObj(party);
+    	party.setLayer(map);
+    	cameraX.bind(party.xProperty().add(-5));
+    	cameraY.bind(party.yProperty().add(-5));
+    	
+    	cameraX.addListener((observable,oldValue,newValue)->{
+			if(!oldValue.equals(newValue))
+				updateView();
+    	});
+    	cameraY.addListener((observable,oldValue,newValue)->{
+			if(!oldValue.equals(newValue))
+				updateView();
+    	});
+    	
     	//test set
-    	map.set(0, 0, 0, 1);
+    	map.setBG(1, 0, 61);
+    	map.setBG(2, 0, 61);
+    	map.setBG(3, 0, 61);
+    	map.setBG(4, 0, 65);
     	updateView();
 		Group root=new Group();
 		StackPane sP=new StackPane();
@@ -72,22 +90,22 @@ public class Main extends Application{
 			case UP:
 				log.println("up");
 				log.flush();
-				moveCamera(cameraX,cameraY-1);
+				party.moveUp();
 				break;
 			case DOWN:
 				log.println("down");
 				log.flush();
-				moveCamera(cameraX,cameraY+1);
+				party.moveDown();
 				break;
 			case RIGHT:
 				log.println("right");
 				log.flush();
-				moveCamera(cameraX+1,cameraY);
+				party.moveRight();
 				break;
 			case LEFT:
 				log.println("left");
 				log.flush();
-				moveCamera(cameraX-1,cameraY);
+				party.moveLeft();
 				break;
 			default:
 				break;
@@ -104,8 +122,8 @@ public class Main extends Application{
 		
 	}
 	public static void updateView() {
-		int[][] tempBg=map.display(cameraX, cameraY, screenSize,0);
-		int[][] tempObj=map.display(cameraX, cameraY, screenSize,1);
+		int[][] tempBg=map.display(cameraX.get(), cameraY.get(), screenSize,0);
+		int[][] tempObj=map.display(cameraX.get(), cameraY.get(), screenSize,1);
 		for(int i=0;i<screenSize;i++) {
 			for(int j=0;j<screenSize;j++) {
 				view[i][j].set(tempBg[i][j]);
@@ -113,12 +131,6 @@ public class Main extends Application{
 			}
 		}
 	}
-	public static void moveCamera(int x,int y) {
-		cameraX=x;
-		cameraY=y;
-		updateView();
-	}
-	
 	
 	public static void main(String[] args) {
 		Application.launch(args);

@@ -1,0 +1,40 @@
+character
+hp
+mp
+str
+item requirement
+
+agi
+acc
+crit
+
+int
+skill learn time
+mp
+
+luck
+eva
+
+item exp
+
+status resistance
+1 number
+
+
+2 slot item
+
+punch
+1 damage
+
+
+item
+type
+weight
+atk
+
+def item
+def
+
+
+
+

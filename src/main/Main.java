@@ -56,7 +56,7 @@ public class Main extends Application{
     	//load object data
     	map=new Map(fileData);
     	party=new Party(0,map.getSpawnX(),map.getSpawnY());
-    	map.setObj(party);
+    	map.addEntity(party);
     	party.setLayer(map);
     	cameraX.bind(party.xProperty().add(-5));
     	cameraY.bind(party.yProperty().add(-5));

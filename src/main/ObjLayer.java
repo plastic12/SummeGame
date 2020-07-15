@@ -1,11 +1,21 @@
 package main;
 
+import java.util.Iterator;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 public class ObjLayer extends Layer{
-	public ObjTile[][] wholemap;
+	public int[][] wholemap;
 	
 	public ObjLayer(int width, int height) {
 		super(width, height);
-		wholemap=new ObjTile[width][height];
+		wholemap=new int[width][height];
+		for(int i=0;i<width;i++) {
+			for(int j=0;j<height;j++) {
+				wholemap[i][j]=nullValue;
+			}
+		}
 	}
 
 	@Override
@@ -18,24 +28,36 @@ public class ObjLayer extends Layer{
 				if(outOfBound(newX,newY)) {
 					output[i][j]=nullValue;
 				}
-				else if(wholemap[newX][newY]==null) {
-					output[i][j]=nullValue;
-				}
 				else
-					output[i][j]=wholemap[newX][newY].index;
+					output[i][j]=wholemap[newX][newY];
 			}
 		}
 		return output;
 	}
 	public void set(ObjTile obj) {
-		wholemap[obj.getX()][obj.getY()]=obj;
+		wholemap[obj.getX()][obj.getY()]=obj.index;
 	}
 	public void move(int x,int y,int newX,int newY) {
-		ObjTile temp=wholemap[x][y];
-		if(temp!=null)
+		int temp=wholemap[x][y];
+		if(temp!=nullValue)
 		{
 			wholemap[newX][newY]=temp;
-			wholemap[x][y]=null;
+			wholemap[x][y]=nullValue;
+		}
+	}
+	public ObjLayer(JSONObject input) {
+		super(((Long)input.get("width")).intValue(),((Long)input.get("height")).intValue());
+		wholemap=new int[width][height];
+		JSONArray data=(JSONArray)input.get("objLayer");
+		@SuppressWarnings("unchecked")
+		Iterator<Long>iter=data.iterator();
+		for(int j=0;j<height;j++) {
+			for(int i=0;i<width;i++) {
+				if(iter.hasNext())
+					wholemap[i][j]=iter.next().intValue();
+				else
+					wholemap[i][j]=0;
+			}
 		}
 		
 	}
@@ -45,8 +67,11 @@ public class ObjLayer extends Layer{
 		else
 			return false;
 	}
+	public int get(int x,int y) {
+		return wholemap[x][y];
+	}
 	public boolean canPass(int x,int y) {
-		return wholemap[x][y]==null;
+		return wholemap[x][y]==nullValue;
 	}
 	
 }

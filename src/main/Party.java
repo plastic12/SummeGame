@@ -8,7 +8,7 @@ public class Party extends ObjTile{
 	private IntegerProperty xPro;
 	private IntegerProperty yPro;
 	public Party(int index, int x, int y) {
-		super(index, x, y);
+		super(index);
 		xPro=new SimpleIntegerProperty(x);
 		yPro=new SimpleIntegerProperty(y);
 	}
@@ -22,7 +22,7 @@ public class Party extends ObjTile{
 		if(!map.canMove(newX, newY))
 			return;
 		else {
-			map.move(getX(),getY(),newX,newY);
+			map.move(this,getX(),getY(),newX,newY);
 			xPro.set(newX);
 			yPro.set(newY);
 

@@ -1,6 +1,10 @@
 package main;
 
+import java.io.FileReader;
 import java.io.PrintWriter;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import javafx.application.Application;
 import javafx.beans.property.IntegerProperty;
@@ -37,12 +41,21 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		//input file
+		JSONParser parser=new JSONParser();
+		JSONObject fileData=(JSONObject) parser.parse(new FileReader("out.json"));
+		//output log
     	log=new PrintWriter("log.txt");
     	log.append("start");
     	log.flush();
+    	
+    	//load data
+    	//load static data
     	Library.load();
-    	party=new Party(0,0,0);
-    	map=new Map(50,50);
+    	BGLayer.loadData(fileData);
+    	//load object data
+    	map=new Map(fileData);
+    	party=new Party(0,map.getSpawnX(),map.getSpawnY());
     	map.setObj(party);
     	party.setLayer(map);
     	cameraX.bind(party.xProperty().add(-5));
@@ -57,11 +70,7 @@ public class Main extends Application{
 				updateView();
     	});
     	
-    	//test set
-    	map.setBG(1, 0, 61);
-    	map.setBG(2, 0, 61);
-    	map.setBG(3, 0, 61);
-    	map.setBG(4, 0, 65);
+    	//main code
     	updateView();
 		Group root=new Group();
 		StackPane sP=new StackPane();

@@ -1,16 +1,28 @@
 package main;
 
+import org.json.simple.JSONObject;
+
 public class Map {
 	private BGLayer bgLayer;
 	private ObjLayer objLayer;
 	private int width;
 	private int height;
 	public static final int nullValue=-1;
+	private int spawnX;
+	private int spawnY;
 	
 	public Map(int width,int height) {
 		this.width=width;
 		this.height=height;
 		bgLayer=new BGLayer(width,height,60);
+		objLayer=new ObjLayer(width,height);
+	}
+	public Map(JSONObject input) {
+		width=((Long)input.get("width")).intValue();
+		height=((Long)input.get("height")).intValue();
+		spawnX=((Long)input.get("spawnX")).intValue();
+		spawnY=((Long)input.get("spawnY")).intValue();
+		bgLayer=new BGLayer(input);
 		objLayer=new ObjLayer(width,height);
 	}
 	//cameraX,cameraY is the position of top left hand corner
@@ -27,6 +39,8 @@ public class Map {
 	public void setBG(int x,int y,int value) {
 		bgLayer.set(x,y,value);
 	}
+	public int getSpawnX() {return spawnX;}
+	public int getSpawnY() {return spawnY;}
 	public void setObj(ObjTile t) {
 		objLayer.set(t);
 	}

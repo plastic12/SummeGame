@@ -1,29 +1,15 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 public class BGLayer extends Layer{
 	private int[][] wholemap;
 	
 	private static ArrayList<Tile> tiles=new ArrayList<Tile>();
-	static {
-		for(int i=0;i<60;i++) {
-			tiles.add(new Tile(false));
-		}
-		tiles.add(new Tile(true));
-		tiles.add(new Tile(true));
-		tiles.add(new Tile(true));
-		tiles.add(new Tile(true));
-		tiles.add(new Tile(true));
-		tiles.add(new Tile(false));
-		tiles.add(new Tile(false));
-		tiles.add(new Tile(false));
-		tiles.add(new Tile(false));
-		tiles.add(new Tile(false));
-		tiles.add(new Tile(false));
-		tiles.add(new Tile(false));
-		tiles.add(new Tile(false));
-	}
 	
 	
 	public BGLayer(int width, int height) {
@@ -37,6 +23,30 @@ public class BGLayer extends Layer{
 				wholemap[i][j]=defaultValue;
 			}
 		}
+	}
+	@SuppressWarnings("unchecked")
+	public static void loadData(JSONObject input) {
+		JSONArray tileset=(JSONArray)input.get("tileset");
+		for(Object e:tileset) {
+			tiles.add(new Tile((JSONObject)e));
+		}
+		
+	}
+	public BGLayer(JSONObject input) {
+		super(((Long)input.get("width")).intValue(),((Long)input.get("height")).intValue());
+		wholemap=new int[width][height];
+		JSONArray data=(JSONArray)input.get("data");
+		@SuppressWarnings("unchecked")
+		Iterator<Long>iter=data.iterator();
+		for(int j=0;j<height;j++) {
+			for(int i=0;i<width;i++) {
+				if(iter.hasNext())
+					wholemap[i][j]=iter.next().intValue();
+				else
+					wholemap[i][j]=0;
+			}
+		}
+		
 	}
 
 	@Override

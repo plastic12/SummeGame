@@ -27,7 +27,7 @@ public class ToolMain {
 		{
 			for(int i=0;i<width;i++) {
 				if(i==2&&j==1)
-					objLayer.add(1);
+					objLayer.add(16);
 				else
 					objLayer.add(-1);
 			}

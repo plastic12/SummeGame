@@ -40,6 +40,7 @@ public class Main extends Application{
 	public static GridPane grid=new GridPane();
 	public static GridPane grid2=new GridPane();
 	public static CharacterPane characterPane;
+	public static FormationPane formationPane;
 
 
 	public static Map map;
@@ -70,6 +71,7 @@ public class Main extends Application{
 		party=new Party(map.getSpawnX(),map.getSpawnY());
 		map.addEntity(party);
 		party.setLayer(map);
+		party.setFormation(0, 0, 0);
 		cameraX.bind(party.xProperty().add(-5));
 		cameraY.bind(party.yProperty().add(-5));
 
@@ -129,8 +131,12 @@ public class Main extends Application{
 			}
 		}
 		characterPane=new CharacterPane(party);
+		formationPane=new FormationPane(party);
+		
+		
+		
 
-		sP.getChildren().addAll(grid,grid2,characterPane);
+		sP.getChildren().addAll(grid,grid2,characterPane,formationPane);
 		updateScene();
 
 		Scene scene=new Scene(root);
@@ -179,13 +185,19 @@ public class Main extends Application{
 			grid.setVisible(true);
 			grid2.setVisible(true);
 			characterPane.setVisible(false);
+			formationPane.setVisible(false);
 			break;
 		case character:
 			grid.setVisible(false);
 			grid2.setVisible(false);
 			characterPane.setVisible(true);
+			formationPane.setVisible(false);
 			break;
 		case formation:
+			grid.setVisible(false);
+			grid2.setVisible(false);
+			characterPane.setVisible(false);
+			formationPane.setVisible(true);
 			break;
 		case option:
 			break;

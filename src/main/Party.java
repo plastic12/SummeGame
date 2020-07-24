@@ -27,6 +27,37 @@ public class Party extends ObjTile{
 	public void setLayer(Map map) {
 		this.map=map;
 	}
+	public Character getFormation(int x,int y) {
+		if(x<0||x>=3||y<0||y>=3)
+			return null;
+		return formation[x][y];
+	}
+	public boolean setFormation(int x,int y,int index) {
+		if(index<0||index>=5)
+			return false;
+		if(x<0||x>=3||y<0||y>=3)
+			return false;
+		Character select=characters[index];
+		if(select!=null) {
+			for(int i=0;i<3;i++) {
+				for(int j=0;j<3;j++) {
+					if(select.equals(formation[i][j]))
+					{
+						if(x==i&&y==j)
+							return false;
+						else
+						{
+							formation[i][j]=null;
+							formation[x][y]=select;
+							return true;
+						}
+					}
+				}
+			}
+		}
+		formation[x][y]=select;
+		return true;
+	}
 	
 	public void move(int newX,int newY) {
 		if(!map.canMove(newX, newY))

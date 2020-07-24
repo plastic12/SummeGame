@@ -12,6 +12,7 @@ public class Library {
 		textures=new ArrayList<Image>();
 		textures.add(new Image("texture/tileset.png"));
 		textures.add(new Image("texture/tileset2.png"));
+		textures.add(new Image("texture/character.png"));
 	}
 
 }

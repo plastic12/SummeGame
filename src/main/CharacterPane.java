@@ -1,9 +1,5 @@
 package main;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.Control;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -23,13 +19,12 @@ public class CharacterPane extends Pane{
 	    Text intLabel=new Text();
 	    Text luckLabel=new Text();
 	    FlowPane statusPane=new FlowPane();
-	    statusPane.setLayoutX(20);
-	    statusPane.setLayoutY(250);
-	    statusPane.getChildren().addAll(nameLabel,levelLabel,strLabel,agiLabel,intLabel,luckLabel);
+	    UpdateImView characterView=new UpdateImView(32,32,Library.textures.get(2));
+	    
 		
-		ListView<Character> selectPane = new ListView<Character>();
-		selectPane.setLayoutX(20);
-		selectPane.setLayoutY(20);
+	    CharacterSelectPane selectPane = new CharacterSelectPane();
+		selectPane.setLayoutX(25);
+		selectPane.setLayoutY(25);
 		Character[] characters=party.getCharacters();
 		for(Character c:characters) {
 			selectPane.getItems().add(c);
@@ -42,11 +37,21 @@ public class CharacterPane extends Pane{
 			agiLabel.setText("agi:"+Integer.toString(newValue.getAgi()));
 			intLabel.setText("int:"+Integer.toString(newValue.getIntell()));
 			luckLabel.setText("luck:"+Integer.toString(newValue.getLuck()));
+			characterView.setIndex(newValue.getIndex());
 		});
 		
-	    selectPane.setMaxHeight(200);
-	    selectPane.setPrefWidth(200);
-	    getChildren().addAll(selectPane,statusPane);
+	    
+	    statusPane.setLayoutX(25);
+	    statusPane.setLayoutY(250);
+	    statusPane.setPrefWidth(200);
+	    statusPane.getChildren().addAll(nameLabel,levelLabel,strLabel,agiLabel,intLabel,luckLabel);
+	    
+	    
+	    characterView.setLayoutX(275);
+	    characterView.setLayoutY(25);
+	    
+	    
+	    getChildren().addAll(selectPane,statusPane,characterView);
 	    
 
 	}

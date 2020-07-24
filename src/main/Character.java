@@ -47,7 +47,7 @@ public class Character {
 		c.str=10;
 		c.Intell=20;
 		c.luck=5;
-		c.image=0;
+		c.image=1;
 		return c;
 	}
 	public static Character characterModel3() {
@@ -62,7 +62,7 @@ public class Character {
 		c.str=10;
 		c.Intell=6;
 		c.luck=10;
-		c.image=0;
+		c.image=2;
 		return c;
 	}
 	public static Character characterModel4() {
@@ -77,7 +77,7 @@ public class Character {
 		c.str=10;
 		c.Intell=10;
 		c.luck=10;
-		c.image=0;
+		c.image=3;
 		return c;
 	}
 	public static Character characterModel5() {
@@ -92,7 +92,7 @@ public class Character {
 		c.str=10;
 		c.Intell=5;
 		c.luck=15;
-		c.image=0;
+		c.image=4;
 		return c;
 	}
 	

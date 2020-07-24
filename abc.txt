@@ -38,3 +38,38 @@ def
 
 
 
+
+15/7/20
+
+map:
+treature
+monster
+exit
+on off lever
+
+
+
+ui component:
+formation
+
+
+stat
+character
+image
+item
+slot
+
+battle
+
+
+
+
+
+
+
+
+
+
+
+
+

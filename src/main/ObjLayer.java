@@ -35,7 +35,7 @@ public class ObjLayer extends Layer{
 		return output;
 	}
 	public void set(ObjTile obj) {
-		wholemap[obj.getX()][obj.getY()]=obj.index;
+		wholemap[obj.getX()][obj.getY()]=obj.getIndex();
 	}
 	public void move(int x,int y,int newX,int newY) {
 		int temp=wholemap[x][y];

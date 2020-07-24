@@ -1,14 +1,10 @@
 package main;
 
 public abstract class ObjTile implements Comparable<ObjTile>{
-	protected int index;
 	public abstract int getX();
 	public abstract int getY();
-	public ObjTile(int index) {
-		this.index=index;
-	}
 	
-	public int getIndex() {return index;}
+	public abstract int getIndex() ;
 	@Override
 	public int compareTo(ObjTile o) {
 		int x=o.getX();

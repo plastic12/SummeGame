@@ -2,7 +2,6 @@ package main;
 
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.image.ImageView;
 
 public class CharacterSelectPane extends ListView<Character>{
 

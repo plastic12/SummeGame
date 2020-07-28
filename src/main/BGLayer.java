@@ -24,7 +24,6 @@ public class BGLayer extends Layer{
 			}
 		}
 	}
-	@SuppressWarnings("unchecked")
 	public static void loadData(JSONObject input) {
 		JSONArray tileset=(JSONArray)input.get("tileset");
 		for(Object e:tileset) {

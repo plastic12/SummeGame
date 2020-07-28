@@ -1,7 +1,13 @@
 package main;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.stream.Collectors;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -12,14 +18,11 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Main extends Application{
@@ -55,8 +58,10 @@ public class Main extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		//input file
+		ClassLoader loader = Main.class.getClassLoader();
 		JSONParser parser=new JSONParser();
-		JSONObject fileData=(JSONObject) parser.parse(new FileReader("out.json"));
+
+		JSONObject fileData=(JSONObject) parser.parse(fileToString("data/out.json"));
 		//output log
 		log=new PrintWriter("log.txt");
 		log.append("start");
@@ -205,7 +210,11 @@ public class Main extends Application{
 			break;
 		}
 	}
-
+	public static String fileToString(String filename) throws IOException {
+		InputStream is=((InputStream) ClassLoader.getSystemResource(filename).getContent());
+		return new BufferedReader(new InputStreamReader(is))
+				  .lines().collect(Collectors.joining("\n"));
+	}
 
 	public static void updateView() {
 		int[][] tempBg=map.display(cameraX.get(), cameraY.get(), screenSize,0);

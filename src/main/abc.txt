@@ -32,6 +32,9 @@ type
 weight
 atk
 
+
+¼C/ºj/©ò/¤P­º/¤}½b/§ë¼Ð/©¸
+
 def item
 def
 

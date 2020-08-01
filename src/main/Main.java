@@ -39,11 +39,11 @@ public class Main extends Application{
 		}
 	}
 	//gui component
-	public static SceneStatus sceneStatus=SceneStatus.map;
+	private static SceneStatus sceneStatus=SceneStatus.map;
 	public static GridPane grid=new GridPane();
 	public static GridPane grid2=new GridPane();
 	public static CharacterPane characterPane;
-	public static FormationPane formationPane;
+	public static FormationSelectPane formationPane;
 
 
 	public static Map map;
@@ -96,23 +96,19 @@ public class Main extends Application{
 		HBox optionFrame=new HBox();
 		Button mapBtn=new Button("map");
 		mapBtn.setOnAction(e->{
-			sceneStatus=SceneStatus.map;
-			updateScene();
+			changeScene(SceneStatus.map);
 		});
 		Button characterBtn=new Button("character");
 		characterBtn.setOnAction(e->{
-			sceneStatus=SceneStatus.character;
-			updateScene();
+			changeScene(SceneStatus.character);
 		});
 		Button formationBtn=new Button("formation");
 		formationBtn.setOnAction(e->{
-			sceneStatus=SceneStatus.formation;
-			updateScene();
+			changeScene(SceneStatus.formation);
 		});
 		Button optionBtn=new Button("option");
 		optionBtn.setOnAction(e->{
-			sceneStatus=SceneStatus.option;
-			updateScene();
+			changeScene(SceneStatus.option);
 		});
 		optionFrame.getChildren().addAll(mapBtn,characterBtn,formationBtn,optionBtn);
 		StackPane sP=new StackPane();
@@ -136,13 +132,16 @@ public class Main extends Application{
 			}
 		}
 		characterPane=new CharacterPane(party);
-		formationPane=new FormationPane(party);
-		
-		
-		
+		formationPane=new FormationSelectPane(party);
+
+
+
 
 		sP.getChildren().addAll(grid,grid2,characterPane,formationPane);
-		updateScene();
+		grid.setVisible(true);
+		grid2.setVisible(true);
+		characterPane.setVisible(false);
+		formationPane.setVisible(false);
 
 		Scene scene=new Scene(root);
 		scene.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent evt)->{
@@ -184,36 +183,51 @@ public class Main extends Application{
 		primaryStage.show();
 
 	}
-	public static void updateScene() {
-		switch(sceneStatus) {
-		case map:
-			grid.setVisible(true);
-			grid2.setVisible(true);
-			characterPane.setVisible(false);
-			formationPane.setVisible(false);
-			break;
-		case character:
-			grid.setVisible(false);
-			grid2.setVisible(false);
-			characterPane.setVisible(true);
-			formationPane.setVisible(false);
-			break;
-		case formation:
-			grid.setVisible(false);
-			grid2.setVisible(false);
-			characterPane.setVisible(false);
-			formationPane.setVisible(true);
-			break;
-		case option:
-			break;
-		default:
-			break;
+	public static void changeScene(SceneStatus newVal) {
+		if(sceneStatus==newVal)
+			return;
+		else{
+			//close
+			switch(sceneStatus) {
+			case map:
+				grid.setVisible(false);
+				grid2.setVisible(false);
+				break;
+			case character:
+				characterPane.reset();
+				characterPane.setVisible(false);
+				break;
+			case formation:
+				formationPane.reset();
+				formationPane.setVisible(false);
+				break;
+			default:
+				break;
+			}
+			//open
+			switch(newVal) {
+			case map:
+				grid.setVisible(true);
+				grid2.setVisible(true);
+				break;
+			case character:
+				characterPane.setVisible(true);
+				break;
+			case formation:
+				formationPane.setVisible(true);
+				break;
+			case option:
+				break;
+			default:
+				break;
+			}
 		}
+		sceneStatus=newVal;
 	}
 	public static String fileToString(String filename) throws IOException {
 		InputStream is=((InputStream) ClassLoader.getSystemResource(filename).getContent());
 		return new BufferedReader(new InputStreamReader(is))
-				  .lines().collect(Collectors.joining("\n"));
+				.lines().collect(Collectors.joining("\n"));
 	}
 
 	public static void updateView() {

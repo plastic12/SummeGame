@@ -4,7 +4,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
-public class FormPane extends StackPane{
+public class FormPane extends Pane{
 	
 	private static final int HGAP=3;
 	private static final int VGAP=3;
@@ -13,8 +13,7 @@ public class FormPane extends StackPane{
 	public FormPane() {
 		this.setPrefHeight((VGAP+32)*3+VGAP);
 		this.setPrefWidth((HGAP+32)*3+HGAP);
-		Pane background=new Pane();
-		background.setStyle("-fx-background-image:url(\"texture/grid.png\");");
+		this.setStyle("-fx-background-image:url(\"texture/grid.png\");");
 		GridPane grid=new GridPane();
 		grid.setHgap(HGAP);
 		grid.setVgap(VGAP);
@@ -30,7 +29,7 @@ public class FormPane extends StackPane{
 			}
 		}
 		
-		this.getChildren().addAll(background,grid);
+		this.getChildren().addAll(grid);
 	}
 	public void set(int i,int j,int index) {
 		images[i][j].setIndex(index);

@@ -5,6 +5,7 @@ import javafx.scene.layout.Pane;
 public class FormationSelectPane extends Pane{
 	private CharacterSelectPane selectPane;
 	public FormationSelectPane(Party party) {
+		this.setStyle("-fx-background-color:aliceblue");
 		selectPane = new CharacterSelectPane();
 	    FormPane formPane=new FormPane();
 	    //set image grid

@@ -4,9 +4,9 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class Party extends ObjTile{
-	private Map map;
-	private IntegerProperty xPro;
-	private IntegerProperty yPro;
+	protected Map map;
+	protected IntegerProperty xPro;
+	protected IntegerProperty yPro;
 	public Character[] characters=new Character[5];
 	public Character[][] formation=new Character[3][3];
 	

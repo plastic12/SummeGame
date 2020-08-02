@@ -14,6 +14,7 @@ public class UpdateImView extends ImageView{
 	private int width;
 	private int height;
 	private IntegerProperty index=new SimpleIntegerProperty(nullValue);
+	private int defaultIndex=nullValue;
 	public UpdateImView(int width,int height,IntegerProperty ref,Image texture) {
 		this(width,height,texture);
 		setRef(ref);
@@ -38,12 +39,15 @@ public class UpdateImView extends ImageView{
 	public void setIndex(int newVal) {
 		index.set(newVal);
 	}
+	public void setDefault(int val) {
+		defaultIndex=val;
+		updateImage();
+	}
 	private void updateImage() {
 
 
 		if(index.get()!=nullValue)
 		{
-			setVisible(true);
 			setImage(texture);
 			int i=index.get()%textureWidth;
 			int j=index.get()/textureWidth;
@@ -51,8 +55,16 @@ public class UpdateImView extends ImageView{
 			setViewport(croppedPortion);
 		}
 		else {
+			if(defaultIndex==nullValue)
+				setImage(null);
+			else{
+				setImage(texture);
+				int i=defaultIndex%textureWidth;
+				int j=defaultIndex/textureWidth;
+				Rectangle2D croppedPortion = new Rectangle2D(i*width, j*height, width, height);
+				setViewport(croppedPortion);
+			}
 			//setVisible(false);
-			setImage(null);
 			//Rectangle2D croppedPortion = new Rectangle2D(0,0, 32, 32);
 			//setViewport(croppedPortion);
 		}

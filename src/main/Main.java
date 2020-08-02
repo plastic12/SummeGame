@@ -49,7 +49,7 @@ public class Main extends Application{
 	public static Map map;
 	public static IntegerProperty cameraX=new SimpleIntegerProperty(0) ;
 	public static IntegerProperty cameraY=new SimpleIntegerProperty(0);
-	public static Party party;
+	public static MainChar party;
 	//public static Party party;
 
 
@@ -73,7 +73,9 @@ public class Main extends Application{
 		BGLayer.loadData(fileData);
 		//load object data
 		map=new Map(fileData);
-		party=new Party(map.getSpawnX(),map.getSpawnY());
+		party=new MainChar(map.getSpawnX(),map.getSpawnY());
+		party.addItem(Weapon.getBow());
+		party.characters[0].equipWeapon(party.weapons.get(0));
 		map.addEntity(party);
 		party.setLayer(map);
 		party.setFormation(0, 0, 0);

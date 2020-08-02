@@ -15,11 +15,11 @@ public class Character {
 	private Weapon weapon;
 	private Armor armor;
 	private int image;
-	
-	
+
+
 	private Character() {
 	}
-	
+
 	public static Character characterModel1() {
 		Character c=new Character();
 		c.name="Charles";
@@ -35,6 +35,14 @@ public class Character {
 		c.image=0;
 		return c;
 	}
+	public Weapon getWeapon() {
+		return weapon;
+	}
+
+	public Armor getArmor() {
+		return armor;
+	}
+
 	public static Character characterModel2() {
 		Character c=new Character();
 		c.name="Mary";
@@ -95,12 +103,12 @@ public class Character {
 		c.image=4;
 		return c;
 	}
-	
-	
-	
+
+
+
 	public int getIndex() {return image;}
-	
-	
+
+
 	public String getName() {
 		return name;
 	}
@@ -147,13 +155,32 @@ public class Character {
 
 
 	public String toString() {return name;}
-	
-	
-	
-	
-	
-	
-	
-	
+
+	public void equipWeapon(Weapon w) {
+		if(weapon!=null) {
+			weapon.c=null;
+		}
+		if(w.c!=null) {
+			w.c.weapon=null;
+		}
+		weapon=w;
+		w.c=this;
+	}
+	public void equipArmor(Armor a) {
+		if(armor!=null){
+			armor.c.armor=null;
+			armor.c=null;
+		}
+		armor=a;
+		a.c=this;
+	}
+
+
+
+
+
+
+
+
 
 }

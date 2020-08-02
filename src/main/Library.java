@@ -13,6 +13,7 @@ public class Library {
 		textures.add(new Image("texture/tileset.png"));
 		textures.add(new Image("texture/tileset2.png"));
 		textures.add(new Image("texture/character.png"));
+		textures.add(new Image("texture/item.png"));
 	}
 
 }

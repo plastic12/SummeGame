@@ -1,5 +1,6 @@
 package main;
 
-public class Armor {
-	private int def;
+public class Armor extends Item{
+	public int def;
+	public Character c;
 }

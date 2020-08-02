@@ -58,6 +58,7 @@ public class Map {
 		else
 			System.out.println("object already exist in the tile.");
 	}
+	//dont call this call the character version
 	public void move(ObjTile e,int x,int y,int newX,int newY) {
 		if(e==entities.ceiling(e)) {
 			entities.remove(e);

@@ -4,3 +4,4 @@ bin
 .classpath
 /log.txt
 build
+build.bat

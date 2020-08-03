@@ -9,6 +9,8 @@ import java.lang.module.ModuleFinder;
 import java.lang.module.ModuleReference;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.TreeMap;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -19,25 +21,19 @@ import org.json.simple.parser.ParseException;
 public class ToolMain {
 	
 	public static void main(String[] args) throws Exception {
-		modify();
+		test();
 	}
 	public static void test() throws URISyntaxException {
-		
-		ClassLoader loader = ToolMain.class.getClassLoader();
-		System.out.println(loader.getResource("data/out.json"));
-		//File file=new File(loader.getResource("data/out.json").toURI());
-		/*
-		Path path=Paths.get("data/out.json");
-		System.out.format("toString: %s%n", path.toString());
-		System.out.format("getFileName: %s%n", path.getFileName());
-		System.out.format("getName(0): %s%n", path.getName(0));
-		System.out.format("getNameCount: %d%n", path.getNameCount());
-		System.out.format("subpath(0,2): %s%n", path.subpath(0,2));
-		System.out.format("getParent: %s%n", path.getParent());
-		System.out.format("getRoot: %s%n", path.getRoot());
-		System.out.format("%s%n", path.toUri());
-		*/
-		
+		TreeMap<Position,Position> map=new TreeMap<Position,Position>();
+		ArrayList<Position> container=new ArrayList<Position>();
+		container.add(new Position(10,10));
+		container.add(new Position(20,10));
+		container.add(new Position(30,10));
+		container.add(new Position(40,10));
+		for(Position p:container)
+			map.put(p, p);
+		Position result=map.get(new Position(30,10));
+		System.out.println((result==null)? "no value":result.x+" "+result.y);
 	}
 	public static void moduleChecker() {
 		String moduleName=ModuleFinder.of(Paths.get("json-simple-1.1.1.jar"))

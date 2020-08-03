@@ -42,6 +42,14 @@ public class BattleFormPane extends FormPane{
 			}
 		}
 	}
+	public void clear() {
+		super.clear();
+		for(int i=0;i<3;i++) {
+			for(int j=0;j<3;j++) {
+				statusBars[i][j].reset();
+			}
+		}
+	}
 	static class StatusBar extends StackPane{
 		public IntegerProperty max;
 		public IntegerProperty current;
@@ -67,6 +75,10 @@ public class BattleFormPane extends FormPane{
 		}
 		public void bindCurrent(IntegerProperty bind) {
 			current.bind(bind);
+		}
+		public void reset() {
+			max.unbind();
+			current.unbind();
 		}
 		
 	}

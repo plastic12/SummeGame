@@ -77,7 +77,12 @@ public class Main extends Application{
 		party=new MainChar(map.getSpawnX(),map.getSpawnY());
 		party.addItem(Weapon.getBow());
 		((Character)party.characters[0]).equipWeapon(party.weapons.get(0));
+		//temp add entity
+		
 		map.addEntity(party);
+		map.addEntity(Monsters.getCentaur(2, 2));
+		
+		
 		party.setLayer(map);
 		party.setFormation(0, 0, 0);
 		cameraX.bind(party.xProperty().add(-5));
@@ -137,7 +142,6 @@ public class Main extends Application{
 		characterPane=new CharacterPane(party);
 		formationPane=new FormationSelectPane(party);
 		battlePane=new BattlePanel();
-		battlePane.setSelfParty(party);
 
 
 
@@ -148,7 +152,6 @@ public class Main extends Application{
 		characterPane.setVisible(false);
 		formationPane.setVisible(false);
 		battlePane.setVisible(false);
-		changeScene(SceneStatus.battle);
 
 		Scene scene=new Scene(root);
 		scene.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent evt)->{
@@ -186,6 +189,14 @@ public class Main extends Application{
 		primaryStage.sizeToScene();
 		primaryStage.show();
 
+	}
+	public static void battle(Party enemy) {
+		changeScene(SceneStatus.battle);
+		setUpBattle(enemy);
+	}
+	public static void setUpBattle(Party enemy) {
+		battlePane.setSelfParty(party);
+		battlePane.setEnemy(enemy);
 	}
 	public static void changeScene(SceneStatus newVal) {
 		if(sceneStatus==newVal)

@@ -1,6 +1,6 @@
 package main;
 
-public class SimpleObj extends ObjTile{
+public class SimpleObj implements ObjTile{
 	private int index;
 	private int x;
 	private int y;

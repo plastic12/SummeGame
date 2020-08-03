@@ -41,12 +41,12 @@ public class FormPane extends Pane{
 		}
 	}
 	public void clear() {
-		party=null;
 		for(int i=0;i<3;i++) {
 			for(int j=0;j<3;j++) {
 				images[i][j].setIndex(UpdateImView.nullValue);
 			}
 		}
+		party=null;
 	}
 	public void setParty(Party party) {
 		this.party=party;

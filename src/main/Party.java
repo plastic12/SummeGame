@@ -7,8 +7,8 @@ public class Party extends ObjTile{
 	protected Map map;
 	protected IntegerProperty xPro;
 	protected IntegerProperty yPro;
-	public Character[] characters=new Character[5];
-	public Character[][] formation=new Character[3][3];
+	public Entity[] characters=new Entity[5];
+	public Entity[][] formation=new Entity[3][3];
 	
 	
 	public Party( int x, int y) {
@@ -27,7 +27,7 @@ public class Party extends ObjTile{
 	public void setLayer(Map map) {
 		this.map=map;
 	}
-	public Character getFormation(int x,int y) {
+	public Entity getFormation(int x,int y) {
 		if(x<0||x>=3||y<0||y>=3)
 			return null;
 		return formation[x][y];
@@ -37,7 +37,7 @@ public class Party extends ObjTile{
 			return false;
 		if(x<0||x>=3||y<0||y>=3)
 			return false;
-		Character select=characters[index];
+		Entity select=characters[index];
 		if(select!=null) {
 			for(int i=0;i<3;i++) {
 				for(int j=0;j<3;j++) {
@@ -90,7 +90,7 @@ public class Party extends ObjTile{
 	public int getIndex() {
 		return characters[0].getIndex();
 	}
-	public Character[] getCharacters() {return characters;}
+	public Entity[] getCharacters() {return characters;}
 	
 	
 	

@@ -44,8 +44,8 @@ public class CharacterPane extends Pane{
 		selectPane = new CharacterSelectPane();
 		selectPane.setLayoutX(25);
 		selectPane.setLayoutY(25);
-		Character[] characters=party.getCharacters();
-		for(Character c:characters) {
+		Entity[] characters=party.getCharacters();
+		for(Entity c:characters) {
 			selectPane.getItems().add(c);
 		}
 
@@ -61,19 +61,19 @@ public class CharacterPane extends Pane{
 
 			}
 			else {
-				current=newValue;
-				nameLabel.setText("name:"+newValue.getName());
-				levelLabel.setText("level:"+Integer.toString(newValue.getLevel()));
-				strLabel.setText("str:"+Integer.toString(newValue.getStr()));
-				agiLabel.setText("agi:"+Integer.toString(newValue.getAgi()));
-				intLabel.setText("int:"+Integer.toString(newValue.getIntell()));
-				luckLabel.setText("luck:"+Integer.toString(newValue.getLuck()));
-				characterView.setIndex(newValue.getIndex());
+				current=(Character) newValue;
+				nameLabel.setText("name:"+current.getName());
+				levelLabel.setText("level:"+Integer.toString(current.getLevel()));
+				strLabel.setText("str:"+Integer.toString(current.getStr()));
+				agiLabel.setText("agi:"+Integer.toString(current.getAgi()));
+				intLabel.setText("int:"+Integer.toString(current.getIntell()));
+				luckLabel.setText("luck:"+Integer.toString(current.getLuck()));
+				characterView.setIndex(current.getIndex());
 				weaponView.setVisible(true);
-				Weapon w=newValue.getWeapon();
+				Weapon w=current.getWeapon();
 				weaponView.setIndex((w==null)? UpdateImView.nullValue:w.index);
 				armorView.setVisible(true);
-				Armor a=newValue.getArmor();
+				Armor a=current.getArmor();
 				armorView.setIndex((a==null)? UpdateImView.nullValue:a.index);
 			}
 		});

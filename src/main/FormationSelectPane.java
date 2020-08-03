@@ -8,6 +8,7 @@ public class FormationSelectPane extends Pane{
 		this.setStyle("-fx-background-color:aliceblue");
 		selectPane = new CharacterSelectPane();
 	    FormPane formPane=new FormPane();
+	    formPane.setParty(party);
 	    //set image grid
 		for(int i=0;i<3;i++) {
 			for(int j=0;j<3;j++) {
@@ -15,7 +16,7 @@ public class FormationSelectPane extends Pane{
 				final int xplace=i;
 				final int yplace=j;
 				//set init image
-				Character c=party.getFormation(i, j);
+				Entity c=party.getFormation(i, j);
 				if(c!=null)
 					formPane.set(i,j,c.getIndex());
 				//set formation event
@@ -23,16 +24,7 @@ public class FormationSelectPane extends Pane{
 					boolean change=party.setFormation(xplace, yplace,selectPane.getSelectionModel().getSelectedIndex());
 					if(change) {
 						//update
-						for(int x=0;x<3;x++) {
-							for(int y=0;y<3;y++) {
-								Character c2=party.getFormation(x, y);
-								if(c2==null)
-									formPane.set(x,y,-1);
-								else
-									formPane.set(x,y,c2.getIndex());
-							}
-						}
-						
+						formPane.updateParty();
 					}
 				});
 			}
@@ -45,8 +37,8 @@ public class FormationSelectPane extends Pane{
 		formPane.setLayoutY(25);
 		selectPane.setLayoutX(275);
 		selectPane.setLayoutY(25);
-		Character[] characters=party.getCharacters();
-		for(Character c:characters) {
+		Entity[] characters=party.getCharacters();
+		for(Entity c:characters) {
 			selectPane.getItems().add(c);
 		}
 		

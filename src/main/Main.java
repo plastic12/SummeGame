@@ -44,12 +44,15 @@ public class Main extends Application{
 	public static GridPane grid2=new GridPane();
 	public static CharacterPane characterPane;
 	public static FormationSelectPane formationPane;
-
-
+	public static HBox optionFrame;
+	public static BattlePanel battlePane;
+	
 	public static Map map;
 	public static IntegerProperty cameraX=new SimpleIntegerProperty(0) ;
 	public static IntegerProperty cameraY=new SimpleIntegerProperty(0);
 	public static MainChar party;
+	
+	
 	//public static Party party;
 
 
@@ -58,9 +61,7 @@ public class Main extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		//input file
-		ClassLoader loader = Main.class.getClassLoader();
 		JSONParser parser=new JSONParser();
-
 		JSONObject fileData=(JSONObject) parser.parse(fileToString("data/out.json"));
 		//output log
 		log=new PrintWriter("log.txt");
@@ -75,7 +76,7 @@ public class Main extends Application{
 		map=new Map(fileData);
 		party=new MainChar(map.getSpawnX(),map.getSpawnY());
 		party.addItem(Weapon.getBow());
-		party.characters[0].equipWeapon(party.weapons.get(0));
+		((Character)party.characters[0]).equipWeapon(party.weapons.get(0));
 		map.addEntity(party);
 		party.setLayer(map);
 		party.setFormation(0, 0, 0);
@@ -95,7 +96,7 @@ public class Main extends Application{
 		updateView();
 		Group root=new Group();
 		VBox mainFrame=new VBox();
-		HBox optionFrame=new HBox();
+		optionFrame=new HBox();
 		Button mapBtn=new Button("map");
 		mapBtn.setOnAction(e->{
 			changeScene(SceneStatus.map);
@@ -135,15 +136,19 @@ public class Main extends Application{
 		}
 		characterPane=new CharacterPane(party);
 		formationPane=new FormationSelectPane(party);
+		battlePane=new BattlePanel();
+		battlePane.setSelfParty(party);
 
 
 
 
-		sP.getChildren().addAll(grid,grid2,characterPane,formationPane);
+		sP.getChildren().addAll(grid,grid2,characterPane,formationPane,battlePane);
 		grid.setVisible(true);
 		grid2.setVisible(true);
 		characterPane.setVisible(false);
 		formationPane.setVisible(false);
+		battlePane.setVisible(false);
+		changeScene(SceneStatus.battle);
 
 		Scene scene=new Scene(root);
 		scene.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent evt)->{
@@ -177,9 +182,6 @@ public class Main extends Application{
 				}
 			}
 		});
-
-
-
 		primaryStage.setScene(scene);
 		primaryStage.sizeToScene();
 		primaryStage.show();
@@ -203,6 +205,9 @@ public class Main extends Application{
 				formationPane.reset();
 				formationPane.setVisible(false);
 				break;
+			case battle:
+				battlePane.setVisible(false);
+				break;
 			default:
 				break;
 			}
@@ -220,6 +225,8 @@ public class Main extends Application{
 				break;
 			case option:
 				break;
+			case battle:
+				battlePane.setVisible(true);
 			default:
 				break;
 			}

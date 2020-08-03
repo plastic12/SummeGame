@@ -1,33 +1,29 @@
 package main;
 
-public class Character {
-	private String name;
-	private int level;
-	private int HP;
-	private int MP;
-	private int MaxMP;
-	private int MaxHP;
-	private int agi;
-	private int str;
-	private int Intell;
-	private int luck;
-	private int statRes;
+import javafx.beans.property.SimpleIntegerProperty;
+
+public class Character extends Entity{
+	public final int PUNCH_INDEX=3;
 	private Weapon weapon;
 	private Armor armor;
-	private int image;
 
 
 	private Character() {
+		skills.add(new DamageSkill("punch",Skill.MELEE,1,PUNCH_INDEX));
+		HP=new SimpleIntegerProperty();
+		MP=new SimpleIntegerProperty();
+		MaxHP=new SimpleIntegerProperty();
+		MaxMP=new SimpleIntegerProperty();
 	}
 
 	public static Character characterModel1() {
 		Character c=new Character();
 		c.name="Charles";
 		c.level=1;
-		c.HP=100;
-		c.MP=10;
-		c.MaxHP=100;
-		c.MaxMP=10;
+		c.HP.set(110);
+		c.MP.set(10);
+		c.MaxHP.set(110);;
+		c.MaxMP.set(10);
 		c.agi=10;
 		c.str=20;
 		c.Intell=5;
@@ -35,22 +31,15 @@ public class Character {
 		c.image=0;
 		return c;
 	}
-	public Weapon getWeapon() {
-		return weapon;
-	}
-
-	public Armor getArmor() {
-		return armor;
-	}
 
 	public static Character characterModel2() {
 		Character c=new Character();
 		c.name="Mary";
 		c.level=1;
-		c.HP=50;
-		c.MP=30;
-		c.MaxHP=50;
-		c.MaxMP=30;
+		c.HP.set(50);
+		c.MP.set(30);
+		c.MaxHP.set(50);;
+		c.MaxMP.set(30);
 		c.agi=10;
 		c.str=10;
 		c.Intell=20;
@@ -62,10 +51,10 @@ public class Character {
 		Character c=new Character();
 		c.name="Sam";
 		c.level=1;
-		c.HP=80;
-		c.MP=20;
-		c.MaxHP=80;
-		c.MaxMP=20;
+		c.HP.set(80);
+		c.MP.set(20);
+		c.MaxHP.set(c.getHP());
+		c.MaxMP.set(c.getMP());
 		c.agi=20;
 		c.str=10;
 		c.Intell=6;
@@ -77,10 +66,10 @@ public class Character {
 		Character c=new Character();
 		c.name="Emily";
 		c.level=1;
-		c.HP=100;
-		c.MP=30;
-		c.MaxHP=100;
-		c.MaxMP=30;
+		c.HP.set(100);
+		c.MP.set(30);
+		c.MaxHP.set(c.getHP());
+		c.MaxMP.set(c.getMP());
 		c.agi=10;
 		c.str=10;
 		c.Intell=10;
@@ -92,10 +81,10 @@ public class Character {
 		Character c=new Character();
 		c.name="David";
 		c.level=1;
-		c.HP=50;
-		c.MP=10;
-		c.MaxHP=50;
-		c.MaxMP=10;
+		c.HP.set(50);
+		c.MP.set(10);
+		c.MaxHP.set(c.getHP());
+		c.MaxMP.set(c.getMP());
 		c.agi=10;
 		c.str=10;
 		c.Intell=5;
@@ -103,54 +92,20 @@ public class Character {
 		c.image=4;
 		return c;
 	}
-
-
-
-	public int getIndex() {return image;}
-
-
-	public String getName() {
-		return name;
+	
+	public Weapon getWeapon() {
+		return weapon;
 	}
 
-	public int getLevel() {
-		return level;
+	public Armor getArmor() {
+		return armor;
 	}
 
-	public int getHP() {
-		return HP;
-	}
 
-	public int getMP() {
-		return MP;
-	}
-
-	public int getMaxMP() {
-		return MaxMP;
-	}
-
-	public int getMaxHP() {
-		return MaxHP;
-	}
-
-	public int getAgi() {
-		return agi;
-	}
-
-	public int getStr() {
-		return str;
-	}
-
-	public int getIntell() {
-		return Intell;
-	}
-
-	public int getLuck() {
-		return luck;
-	}
-
-	public int getStatRes() {
-		return statRes;
+	public void damage(int d) {
+		int def=(armor==null)? 0:armor.def;
+		int damage=(d>def)? d-def:0;
+		HP.set((HP.get()>damage)? HP.get()-damage:0);
 	}
 
 
@@ -165,6 +120,7 @@ public class Character {
 		}
 		weapon=w;
 		w.c=this;
+		skills.set(0,w.getSkill());
 	}
 	public void equipArmor(Armor a) {
 		if(armor!=null){
@@ -174,13 +130,5 @@ public class Character {
 		armor=a;
 		a.c=this;
 	}
-
-
-
-
-
-
-
-
 
 }

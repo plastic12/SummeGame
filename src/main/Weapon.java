@@ -1,8 +1,9 @@
 package main;
 
 public abstract class Weapon extends Item{
-	public int atk;
+	protected int atk;
 	public Character c;
+	protected Skill skill;
 	
 	
 	public static Weapon getBow() {
@@ -12,13 +13,10 @@ public abstract class Weapon extends Item{
 		w.index=0;
 		return w;
 	}
+	public Skill getSkill() {
+		return skill;
+	}
 	
 	
 	
-	
-	
-	
-	
-	
-
 }

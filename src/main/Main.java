@@ -18,40 +18,29 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Main extends Application{
-	public static final int screenSize=11;
 	public static PrintWriter log;
-	public static IntegerProperty[][] view=new IntegerProperty[screenSize][screenSize];
-	public static IntegerProperty[][] view2=new IntegerProperty[screenSize][screenSize];
-	static {
-		for(int i=0;i<screenSize;i++) {
-			for(int j=0;j<screenSize;j++) {
-				view[i][j]=new SimpleIntegerProperty(-1);
-				view2[i][j]=new SimpleIntegerProperty(-1);
-			}
-		}
-	}
 	//gui component
-	private static SceneStatus sceneStatus=SceneStatus.map;
-	public static GridPane grid=new GridPane();
-	public static GridPane grid2=new GridPane();
+	private static SceneStatus sceneStatus;
+	public static MapPanel mapPane;
 	public static CharacterPane characterPane;
 	public static FormationSelectPane formationPane;
 	public static HBox optionFrame;
 	public static BattlePanel battlePane;
-	
+
 	public static Map map;
-	public static IntegerProperty cameraX=new SimpleIntegerProperty(0) ;
-	public static IntegerProperty cameraY=new SimpleIntegerProperty(0);
 	public static MainChar party;
-	
+
 
 
 
@@ -76,28 +65,17 @@ public class Main extends Application{
 		party.addItem(Weapon.getBow());
 		((Character)party.characters[0]).equipWeapon(party.weapons.get(0));
 		//temp add entity
-		
+
 		map.addEntity(party);
 		map.addEntity(Monsters.getCentaur(2, 2));
-		
-		
+		map.addEntity(new DialogObj("This is Torii",3,3,26));
+
+
 		party.setLayer(map);
 		party.setFormation(0, 0, 0);
 		party.setFormation(0, 1,1);
-		cameraX.bind(party.xProperty().add(-5));
-		cameraY.bind(party.yProperty().add(-5));
-
-		cameraX.addListener((observable,oldValue,newValue)->{
-			if(!oldValue.equals(newValue))
-				updateView();
-		});
-		cameraY.addListener((observable,oldValue,newValue)->{
-			if(!oldValue.equals(newValue))
-				updateView();
-		});
 
 		//main code
-		updateView();
 		Group root=new Group();
 		VBox mainFrame=new VBox();
 		optionFrame=new HBox();
@@ -123,21 +101,7 @@ public class Main extends Application{
 		sP.setPrefHeight(500);
 		mainFrame.getChildren().addAll(sP,optionFrame);
 		root.getChildren().add(mainFrame);
-
-		grid=new GridPane();
-		for(int i=0;i<screenSize;i++) {
-			for(int j=0;j<screenSize;j++) {
-				MapGrid temp=new MapGrid(i,j,view[i][j],Library.textures.get(0));
-				grid.getChildren().add(temp);
-			}
-		}
-		grid2=new GridPane();
-		for(int i=0;i<screenSize;i++) {
-			for(int j=0;j<screenSize;j++) {
-				ObjectGrid temp=new ObjectGrid(i,j,view2[i][j],Library.textures.get(1));
-				grid.getChildren().add(temp);
-			}
-		}
+		mapPane=new MapPanel();
 		characterPane=new CharacterPane(party);
 		formationPane=new FormationSelectPane(party);
 		battlePane=new BattlePanel();
@@ -145,48 +109,17 @@ public class Main extends Application{
 
 
 
-		sP.getChildren().addAll(grid,grid2,characterPane,formationPane,battlePane);
-		grid.setVisible(true);
-		grid2.setVisible(true);
-		characterPane.setVisible(false);
-		formationPane.setVisible(false);
-		battlePane.setVisible(false);
+		sP.getChildren().addAll(mapPane,characterPane,formationPane,battlePane);
 
 		Scene scene=new Scene(root);
-		scene.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent evt)->{
-			if(sceneStatus==SceneStatus.map)
-			{
-				switch(evt.getCode())
-				{
-				case UP:
-					log.println("up");
-					log.flush();
-					party.moveUp();
-					break;
-				case DOWN:
-					log.println("down");
-					log.flush();
-					party.moveDown();
-					break;
-				case RIGHT:
-					log.println("right");
-					log.flush();
-					party.moveRight();
-					break;
-				case LEFT:
-					log.println("left");
-					log.flush();
-					party.moveLeft();
-					break;
-				default:
-					break;
-
-				}
-			}
+		scene.addEventFilter(KeyEvent.KEY_PRESSED, evt->{
+			if(evt.getCode()==KeyCode.ESCAPE)
+				mapPane.requestFocus();
 		});
 		primaryStage.setScene(scene);
 		primaryStage.sizeToScene();
 		primaryStage.show();
+		initScene();
 
 	}
 	public static void battle(Party enemy) {
@@ -196,6 +129,15 @@ public class Main extends Application{
 	public static void setUpBattle(Party enemy) {
 		battlePane.setup(party,enemy);
 	}
+	public static void initScene() {
+		sceneStatus=SceneStatus.map;
+		mapPane.setVisible(true);
+		mapPane.updateView();
+		characterPane.setVisible(false);
+		formationPane.setVisible(false);
+		battlePane.setVisible(false);
+		mapPane.requestFocus();
+	}
 	public static void changeScene(SceneStatus newVal) {
 		if(sceneStatus==newVal)
 			return;
@@ -203,8 +145,7 @@ public class Main extends Application{
 			//close
 			switch(sceneStatus) {
 			case map:
-				grid.setVisible(false);
-				grid2.setVisible(false);
+				mapPane.setVisible(false);
 				break;
 			case character:
 				characterPane.reset();
@@ -216,6 +157,7 @@ public class Main extends Application{
 				break;
 			case battle:
 				battlePane.setVisible(false);
+				optionFrame.setVisible(true);
 				break;
 			default:
 				break;
@@ -223,9 +165,9 @@ public class Main extends Application{
 			//open
 			switch(newVal) {
 			case map:
-				updateView();
-				grid.setVisible(true);
-				grid2.setVisible(true);
+				mapPane.updateView();
+				mapPane.setVisible(true);
+				mapPane.requestFocus();
 				break;
 			case character:
 				characterPane.setVisible(true);
@@ -237,6 +179,7 @@ public class Main extends Application{
 				break;
 			case battle:
 				battlePane.setVisible(true);
+				optionFrame.setVisible(false);
 			default:
 				break;
 			}
@@ -249,16 +192,6 @@ public class Main extends Application{
 				.lines().collect(Collectors.joining("\n"));
 	}
 
-	public static void updateView() {
-		int[][] tempBg=map.display(cameraX.get(), cameraY.get(), screenSize,0);
-		int[][] tempObj=map.display(cameraX.get(), cameraY.get(), screenSize,1);
-		for(int i=0;i<screenSize;i++) {
-			for(int j=0;j<screenSize;j++) {
-				view[i][j].set(tempBg[i][j]);
-				view2[i][j].set(tempObj[i][j]);
-			}
-		}
-	}
 
 	public static void main(String[] args) {
 		Application.launch(args);

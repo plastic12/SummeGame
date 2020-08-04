@@ -5,7 +5,8 @@ public enum SceneStatus {
 	character,
 	formation,
 	option,
-	battle
+	battle,
+	dialog
 	
 
 }

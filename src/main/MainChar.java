@@ -49,6 +49,7 @@ public class MainChar extends Party implements Movable{
 		else {
 			//move
 			map.move(this,getX(),getY(),newX,newY);
+			
 		}
 	}
 	@Override

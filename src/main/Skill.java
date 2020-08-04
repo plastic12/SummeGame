@@ -15,6 +15,9 @@ public abstract class Skill {
 		this.name=name;
 		this.image=image;
 	}
+	public UpdateImView getImage() {
+		return new UpdateImView(32,32,image,Library.textures.get(3));
+	}
 	
 	public static List<Position> standardSelector(int indicator,Party p){
 		ArrayList<Position> output=new ArrayList<Position>();

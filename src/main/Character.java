@@ -9,7 +9,7 @@ public class Character extends Entity{
 
 
 	private Character() {
-		skills.add(new DamageSkill("punch",Skill.MELEE,1,PUNCH_INDEX));
+		skills.add(new DamageSkill("punch",1,Skill.MELEE,PUNCH_INDEX));
 		HP=new SimpleIntegerProperty();
 		MP=new SimpleIntegerProperty();
 		MaxHP=new SimpleIntegerProperty();
@@ -24,7 +24,7 @@ public class Character extends Entity{
 		c.MP.set(10);
 		c.MaxHP.set(110);;
 		c.MaxMP.set(10);
-		c.agi=10;
+		c.agi=11;
 		c.str=20;
 		c.Intell=5;
 		c.luck=5;

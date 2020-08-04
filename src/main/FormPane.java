@@ -9,7 +9,7 @@ public class FormPane extends Pane{
 	private static final int HGAP=6;
 	private static final int VGAP=6;
 	public ImagePane images[][]=new ImagePane[3][3];
-	private Party party;
+	protected Party party;
 	
 	public FormPane() {
 		this.setPrefHeight((VGAP+64)*3+VGAP);
@@ -35,11 +35,14 @@ public class FormPane extends Pane{
 	public void updateParty() {
 		for(int i=0;i<3;i++) {
 			for(int j=0;j<3;j++) {
-				Entity c=party.getFormation(i, j);
-				images[i][j].setIndex((c!=null)?c.getIndex():UpdateImView.nullValue);
+				Entity e=party.getFormation(i, j);
+				images[i][j].setIndex((e!=null)?e.getIndex():UpdateImView.nullValue);
 			}
 		}
 	}
+	
+	
+	
 	public void clear() {
 		for(int i=0;i<3;i++) {
 			for(int j=0;j<3;j++) {
@@ -50,14 +53,19 @@ public class FormPane extends Pane{
 	}
 	public void setParty(Party party) {
 		this.party=party;
-		updateParty();
+		for(int i=0;i<3;i++) {
+			for(int j=0;j<3;j++) {
+				Entity e=party.getFormation(i, j);
+				images[i][j].setIndex((e!=null)?e.getIndex():UpdateImView.nullValue);
+			}
+		}
 	}
 	public void set(int i,int j,int index) {
 		images[i][j].setIndex(index);
 	}
 	
 	
-	static class ImagePane extends Pane{
+	public static class ImagePane extends Pane{
 		UpdateImView image;
 		public ImagePane() {
 			//his.setStyle("-fx-background-color:red");
@@ -71,6 +79,7 @@ public class FormPane extends Pane{
 		public void setIndex(int index) {
 			image.setIndex(index);
 		}
+		public int getIndex() {return image.getIndex();}
 		
 	}
 

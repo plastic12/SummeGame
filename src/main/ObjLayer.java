@@ -6,14 +6,14 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class ObjLayer extends Layer{
-	public int[][] wholemap;
+	public int[][] d;
 	
 	public ObjLayer(int width, int height) {
 		super(width, height);
-		wholemap=new int[width][height];
+		d=new int[width][height];
 		for(int i=0;i<width;i++) {
 			for(int j=0;j<height;j++) {
-				wholemap[i][j]=nullValue;
+				d[i][j]=nullValue;
 			}
 		}
 	}
@@ -29,34 +29,35 @@ public class ObjLayer extends Layer{
 					output[i][j]=nullValue;
 				}
 				else
-					output[i][j]=wholemap[newX][newY];
+					output[i][j]=d[newX][newY];
 			}
 		}
 		return output;
 	}
 	public void set(ObjTile obj) {
-		wholemap[obj.getX()][obj.getY()]=obj.getIndex();
+		d[obj.getX()][obj.getY()]=obj.getIndex();
 	}
+	public void remove(int x,int y) {d[x][y]=-1;}
 	public void move(int x,int y,int newX,int newY) {
-		int temp=wholemap[x][y];
+		int temp=d[x][y];
 		if(temp!=nullValue)
 		{
-			wholemap[newX][newY]=temp;
-			wholemap[x][y]=nullValue;
+			d[newX][newY]=temp;
+			d[x][y]=nullValue;
 		}
 	}
 	public ObjLayer(JSONObject input) {
 		super(((Long)input.get("width")).intValue(),((Long)input.get("height")).intValue());
-		wholemap=new int[width][height];
+		d=new int[width][height];
 		JSONArray data=(JSONArray)input.get("objLayer");
 		@SuppressWarnings("unchecked")
 		Iterator<Long>iter=data.iterator();
 		for(int j=0;j<height;j++) {
 			for(int i=0;i<width;i++) {
 				if(iter.hasNext())
-					wholemap[i][j]=iter.next().intValue();
+					d[i][j]=iter.next().intValue();
 				else
-					wholemap[i][j]=0;
+					d[i][j]=0;
 			}
 		}
 		
@@ -68,10 +69,10 @@ public class ObjLayer extends Layer{
 			return false;
 	}
 	public int get(int x,int y) {
-		return wholemap[x][y];
+		return d[x][y];
 	}
 	public boolean canPass(int x,int y) {
-		return wholemap[x][y]==nullValue;
+		return d[x][y]==nullValue;
 	}
 	
 }

@@ -22,7 +22,13 @@ public abstract class Entity {
 	
 
 	public int getIndex() {return image;}
-
+	
+	public UpdateImView getImage() {
+		return new UpdateImView(32,32,image,Library.textures.get(2));
+	};
+	public List<Skill> getSkill() {
+		return skills;
+	}
 
 	public String getName() {
 		return name;
@@ -77,6 +83,11 @@ public abstract class Entity {
 	public abstract void damage(int d);
 	public void skill(int i,Party p,int x,int y) {
 		skills.get(i).action(this, p, x, y);
+		p.updateDead();
+	}
+	public void skill(Skill s,Party p,int x,int y) {
+		s.action(this, p, x, y);
+		p.updateDead();
 	}
 
 

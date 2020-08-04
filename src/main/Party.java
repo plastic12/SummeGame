@@ -64,5 +64,20 @@ public class Party implements ObjTile{
 		return characters[0].getIndex();
 	}
 	public Entity[] getCharacters() {return characters;}
+	public boolean inParty(Entity e) {
+		for(Entity compare:characters) {
+			if(e==compare)
+				return true;
+		}
+		return false;
+	}
+	public void updateDead() {
+		for(int i=0;i<3;i++) {
+			for(int j=0;j<3;j++) {
+				if(formation[i][j]!=null&&formation[i][j].isDead())
+					formation[i][j]=null;
+			}
+		}
+	}
 
 }

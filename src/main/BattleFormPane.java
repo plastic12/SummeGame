@@ -1,8 +1,12 @@
 package main;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.StringProperty;
+import javafx.geometry.Pos;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -16,9 +20,9 @@ public class BattleFormPane extends FormPane{
 		super();
 		for(int i=0;i<3;i++) {
 			for(int j=0;j<3;j++) {
-				//System.out.println((images[i][j]==null));
 				StatusBar bar=new StatusBar();
 				bar.setFillColor(Color.GREEN);
+				bar.setEmptyColor(Color.RED);
 				bar.setLayoutY(50);
 				statusBars[i][j]=bar;
 				images[i][j].getChildren().add(bar);
@@ -42,6 +46,18 @@ public class BattleFormPane extends FormPane{
 			}
 		}
 	}
+	public void updateParty() {
+		super.updateParty();
+		for(int i=0;i<3;i++) {
+			for(int j=0;j<3;j++) {
+				Entity c=party.getFormation(i, j);
+				if(c==null)
+					statusBars[i][j].setVisible(false);
+			}
+		}
+	}
+	
+	
 	public void clear() {
 		super.clear();
 		for(int i=0;i<3;i++) {
@@ -50,6 +66,25 @@ public class BattleFormPane extends FormPane{
 			}
 		}
 	}
+	public void clearHL() {
+		for(int i=0;i<3;i++) {
+			for(int j=0;j<3;j++) {
+				images[i][j].setOpacity(1);
+			}
+		}
+	}
+	public void highlight(List<Position> positions) {
+		for(int i=0;i<3;i++) {
+			for(int j=0;j<3;j++) {
+				images[i][j].setOpacity(0.5);
+			}
+		}
+		for(Position p:positions) {
+			images[p.x][p.y].setOpacity(1);
+		}
+	}
+	
+	
 	static class StatusBar extends StackPane{
 		public IntegerProperty max;
 		public IntegerProperty current;
@@ -59,9 +94,11 @@ public class BattleFormPane extends FormPane{
 			max=new SimpleIntegerProperty(100);
 			current=new SimpleIntegerProperty(100);
 			Text text=new Text();
-			text.textProperty().bind(current.asString().concat("/").concat(current));
+			text.textProperty().bind(current.asString().concat("/").concat(max));
 			r1=new Rectangle(64,text.getFont().getSize());
+			r1.widthProperty().bind(current.add(0.0).divide(max).multiply(64));
 			r2=new Rectangle(64,text.getFont().getSize());
+			StackPane.setAlignment(r1, Pos.CENTER_LEFT);
 			this.getChildren().addAll(r2,r1,text);
 		}
 		public void setFillColor(Color color) {

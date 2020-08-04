@@ -59,6 +59,12 @@ public class Map {
 		else
 			System.out.println("object already exist in the tile.");
 	}
+	public void removeEntity(ObjTile e) {
+		int x=e.getX();
+		int y=e.getY();
+		entities.remove(new Position(x,y));
+		objLayer.remove(x, y);
+	}
 	//dont call this call the character version
 	public void move(Movable e,int x,int y,int newX,int newY) {
 		Position key=e.getPosition();

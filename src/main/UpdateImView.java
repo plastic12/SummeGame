@@ -19,6 +19,10 @@ public class UpdateImView extends ImageView{
 		this(width,height,texture);
 		setRef(ref);
 	}
+	public UpdateImView(int width,int height,int ref,Image texture) {
+		this(width,height,texture);
+		setIndex(ref);
+	}
 	public UpdateImView(int width,int height,Image texture) {
 		this.texture=texture;
 		this.width=width;
@@ -39,6 +43,7 @@ public class UpdateImView extends ImageView{
 	public void setIndex(int newVal) {
 		index.set(newVal);
 	}
+	public int getIndex() {return index.get();}
 	public void setDefault(int val) {
 		defaultIndex=val;
 		updateImage();

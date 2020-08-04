@@ -4,10 +4,11 @@ import javafx.scene.layout.Pane;
 
 public class FormationSelectPane extends Pane{
 	private CharacterSelectPane selectPane;
+	private FormPane formPane;
 	public FormationSelectPane(Party party) {
 		this.setStyle("-fx-background-color:aliceblue");
 		selectPane = new CharacterSelectPane();
-	    FormPane formPane=new FormPane();
+	    formPane=new FormPane();
 	    formPane.setParty(party);
 	    //set image grid
 		for(int i=0;i<3;i++) {
@@ -45,24 +46,8 @@ public class FormationSelectPane extends Pane{
 		
 	    getChildren().addAll(selectPane,formPane);
 	}
-	
-	
-	
-	static class ImagePane extends Pane{
-		UpdateImView image;
-		public ImagePane() {
-			image=new UpdateImView(32,32,Library.textures.get(2));
-			
-			this.setPrefHeight(32);
-			this.setPrefWidth(32);
-			this.getChildren().add(image);
-		}
-		void setIndex(int index){
-			image.setIndex(index);
-		}
-	}
 	public void reset() {
-		selectPane.getSelectionModel().select(-1);
+		formPane.clear();
 	}
 	
 

@@ -52,8 +52,6 @@ public class Main extends Application{
 	public static IntegerProperty cameraY=new SimpleIntegerProperty(0);
 	public static MainChar party;
 	
-	
-	//public static Party party;
 
 
 
@@ -85,6 +83,7 @@ public class Main extends Application{
 		
 		party.setLayer(map);
 		party.setFormation(0, 0, 0);
+		party.setFormation(0, 1,1);
 		cameraX.bind(party.xProperty().add(-5));
 		cameraY.bind(party.yProperty().add(-5));
 
@@ -195,8 +194,7 @@ public class Main extends Application{
 		setUpBattle(enemy);
 	}
 	public static void setUpBattle(Party enemy) {
-		battlePane.setSelfParty(party);
-		battlePane.setEnemy(enemy);
+		battlePane.setup(party,enemy);
 	}
 	public static void changeScene(SceneStatus newVal) {
 		if(sceneStatus==newVal)
@@ -225,6 +223,7 @@ public class Main extends Application{
 			//open
 			switch(newVal) {
 			case map:
+				updateView();
 				grid.setVisible(true);
 				grid2.setVisible(true);
 				break;

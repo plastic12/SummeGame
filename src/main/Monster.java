@@ -1,5 +1,7 @@
 package main;
 
+import org.json.simple.JSONObject;
+
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class Monster extends Entity{
@@ -11,6 +13,11 @@ public class Monster extends Entity{
 		MP=new SimpleIntegerProperty();
 		MaxHP=new SimpleIntegerProperty();
 		MaxMP=new SimpleIntegerProperty();
+	}
+	protected Monster(JSONObject input) {
+		super(input);
+		def=((Long)input.get("def")).intValue();
+		
 	}
 	@Override
 	public void damage(int d) {
@@ -96,5 +103,11 @@ public class Monster extends Entity{
 		m.image=20;
 		m.def=1;
 		return m;
+	}
+	public JSONObject toJSON() {
+		JSONObject output=super.toJSON();
+		output.put("entityType",Entity.MONSTER);
+		output.put("def",def);
+		return output;
 	}
 }

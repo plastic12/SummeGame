@@ -2,6 +2,8 @@ package main;
 
 import java.util.ArrayList;
 
+import org.json.simple.JSONObject;
+
 public class MainChar extends Party implements Movable{
 	public ArrayList<Weapon> weapons=new ArrayList<Weapon>();
 	public ArrayList<Armor> armors=new ArrayList<Armor>();
@@ -52,6 +54,20 @@ public class MainChar extends Party implements Movable{
 			
 		}
 	}
+	public void move(int newX,int newY,Map map) {
+		if(!map.canMove(newX, newY)) {
+			System.out.println("teleport fail");
+		}
+		else {
+			this.map.removeEntity(this);
+			setX(newX);
+			setY(newY);
+			map.addEntity(this);
+			this.map=map;
+			setX(newX);
+			setY(newY);
+		}
+	}
 	@Override
 	public void setX(int x) {
 		xPro.set(x);
@@ -73,6 +89,11 @@ public class MainChar extends Party implements Movable{
 	}
 	public void moveLeft() {
 		move(getX()-1,getY());
+	}
+	@Override
+	public JSONObject toJSON() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

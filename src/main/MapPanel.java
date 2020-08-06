@@ -92,8 +92,8 @@ public class MapPanel extends Pane{
 		
 	}
 	public void updateView() {
-		int[][] tempBg=Main.map.display(cameraX.get(), cameraY.get(), screenSize,0);
-		int[][] tempObj=Main.map.display(cameraX.get(), cameraY.get(), screenSize,1);
+		int[][] tempBg=Main.getMap().display(cameraX.get(), cameraY.get(), screenSize,0);
+		int[][] tempObj=Main.getMap().display(cameraX.get(), cameraY.get(), screenSize,1);
 		for(int i=0;i<screenSize;i++) {
 			for(int j=0;j<screenSize;j++) {
 				view[i][j].set(tempBg[i][j]);

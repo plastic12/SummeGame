@@ -1,21 +1,23 @@
 package main;
 
+import java.util.Iterator;
+import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class Map {
+	private String name;
 	private BGLayer bgLayer;
 	private ObjLayer objLayer;
 	private int width;
 	private int height;
 	public static final int nullValue=-1;
-	private int spawnX;
-	private int spawnY;
+	private TreeMap<String,Position> locations;
 	private TreeMap<Position,ObjTile> entities;
-	
-	
+
+
 	public Map(int width,int height) {
 		this.width=width;
 		this.height=height;
@@ -23,15 +25,34 @@ public class Map {
 		objLayer=new ObjLayer(width,height);
 		entities=new TreeMap<Position,ObjTile>();
 	}
+	@SuppressWarnings("unchecked")
 	public Map(JSONObject input) {
+		locations=new TreeMap<String,Position>();
+		entities=new TreeMap<Position,ObjTile>();
+		name=(String)input.get("name");
 		width=((Long)input.get("width")).intValue();
 		height=((Long)input.get("height")).intValue();
-		spawnX=((Long)input.get("spawnX")).intValue();
-		spawnY=((Long)input.get("spawnY")).intValue();
+		JSONObject locationsData=(JSONObject) input.get("locations");
+		Set<String> set=locationsData.keySet();
+		for(String s:set) {
+			locations.put(s,new Position((JSONArray)locationsData.get(s)) );
+		}
 		bgLayer=new BGLayer(input);
 		objLayer=new ObjLayer(input);
 		entities=new TreeMap<Position,ObjTile>();
+
+		JSONArray objData=(JSONArray)input.get("objects");
+		Iterator<JSONObject> iter=objData.iterator();
+		while(iter.hasNext()) {
+			addEntity(ObjTile.getObjTile(iter.next()));
+		}
+
+
 	}
+	public Position getLocation(String name) {
+		return locations.get(name);
+	}
+
 	//cameraX,cameraY is the position of top left hand corner
 	public int[][] display(int cameraX,int cameraY,int size,int index){
 		switch(index) {
@@ -46,8 +67,7 @@ public class Map {
 	public void setBG(int x,int y,int value) {
 		bgLayer.set(x,y,value);
 	}
-	public int getSpawnX() {return spawnX;}
-	public int getSpawnY() {return spawnY;}
+	public String getName() {return name;}
 	public void addEntity(ObjTile e) {
 		int x=e.getX();
 		int y=e.getY();
@@ -71,10 +91,12 @@ public class Map {
 		if(e==entities.get(key)) {
 			entities.remove(key);
 			objLayer.move(x, y, newX, newY);
-			e.setX(newX);
-			e.setY(newY);
+			if(x!=newX)
+				e.setX(newX);
+			if(y!=newY)
+				e.setY(newY);
 			entities.put(e.getPosition(), e);
-			
+
 		}
 		else
 			return;

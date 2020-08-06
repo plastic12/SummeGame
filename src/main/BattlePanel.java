@@ -88,8 +88,7 @@ public class BattlePanel extends Pane{
 		enemyPane.updateParty();
 		selfPane.updateParty();
 		if(win()) {
-			System.out.println("win");
-			Main.map.removeEntity(enemy);
+			Main.getMap().removeEntity(enemy);
 			Main.changeScene(SceneStatus.map);
 			clear();
 			return;

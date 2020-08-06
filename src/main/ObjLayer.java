@@ -49,7 +49,7 @@ public class ObjLayer extends Layer{
 	public ObjLayer(JSONObject input) {
 		super(((Long)input.get("width")).intValue(),((Long)input.get("height")).intValue());
 		d=new int[width][height];
-		JSONArray data=(JSONArray)input.get("objLayer");
+		JSONArray data=(JSONArray)input.get("LayerObj");
 		@SuppressWarnings("unchecked")
 		Iterator<Long>iter=data.iterator();
 		for(int j=0;j<height;j++) {

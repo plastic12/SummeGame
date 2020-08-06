@@ -7,8 +7,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.stream.Collectors;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -38,40 +41,46 @@ public class Main extends Application{
 	public static HBox optionFrame;
 	public static BattlePanel battlePane;
 
-	public static Map map;
+	private static ArrayList<Map> maps;
+	public static int mapIndex;
 	public static MainChar party;
 
 
 
 
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		//init data
+		maps=new ArrayList<Map>();
+		mapIndex=0;
 		//input file
 		JSONParser parser=new JSONParser();
-		JSONObject fileData=(JSONObject) parser.parse(fileToString("data/out.json"));
+		JSONObject fileData=(JSONObject) parser.parse(fileToString("data/mapData.json"));
 		//output log
 		log=new PrintWriter("log.txt");
 		log.append("start");
 		log.flush();
 
 		//load data
-		//load static data
 		Library.load();
 		BGLayer.loadData(fileData);
 		//load object data
-		map=new Map(fileData);
-		party=new MainChar(map.getSpawnX(),map.getSpawnY());
+		JSONArray mapsData=(JSONArray) fileData.get("maps");
+		Iterator<JSONObject> iter=mapsData.iterator();
+		while(iter.hasNext()) {
+			maps.add(new Map(iter.next()));
+		}
+		Position spawn=getMap().getLocation("start");
+		party=new MainChar(spawn.x,spawn.y);
 		party.addItem(Weapon.getBow());
 		((Character)party.characters[0]).equipWeapon(party.weapons.get(0));
 		//temp add entity
 
-		map.addEntity(party);
-		map.addEntity(Monsters.getCentaur(2, 2));
-		map.addEntity(new DialogObj("This is Torii",3,3,26));
+		getMap().addEntity(party);
 
-
-		party.setLayer(map);
+		party.setLayer(getMap());
 		party.setFormation(0, 0, 0);
 		party.setFormation(0, 1,1);
 
@@ -120,7 +129,26 @@ public class Main extends Application{
 		primaryStage.sizeToScene();
 		primaryStage.show();
 		initScene();
-
+	}
+	public static void changeMap(int index,String location) {
+		if(mapIndex==index)
+		{
+			Position pos=getMap().getLocation(location);
+			party.move(pos.x,pos.y);
+			return;
+		}
+		else {
+			Position pos=maps.get(index).getLocation(location);
+			party.move(pos.x, pos.y, maps.get(index));
+			mapIndex=index;
+			mapPane.updateView();
+		}
+			
+	}
+	
+	
+	public static Map getMap() {
+		return maps.get(mapIndex);
 	}
 	public static void battle(Party enemy) {
 		changeScene(SceneStatus.battle);
@@ -152,7 +180,6 @@ public class Main extends Application{
 				characterPane.setVisible(false);
 				break;
 			case formation:
-				formationPane.reset();
 				formationPane.setVisible(false);
 				break;
 			case battle:

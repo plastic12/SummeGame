@@ -5,3 +5,4 @@ bin
 /log.txt
 build
 build.bat
+resource_build

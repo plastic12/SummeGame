@@ -8,6 +8,8 @@ public class Library {
 	public static ArrayList<Image> textures;
 	
 	
+	
+	
 	public static void load() {
 		textures=new ArrayList<Image>();
 		textures.add(new Image("texture/tileset.png"));

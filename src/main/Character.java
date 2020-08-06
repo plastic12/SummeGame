@@ -1,5 +1,7 @@
 package main;
 
+import org.json.simple.JSONObject;
+
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class Character extends Entity{
@@ -129,6 +131,14 @@ public class Character extends Entity{
 		}
 		armor=a;
 		a.c=this;
+	}
+
+	@Override
+	public JSONObject toJSON() {
+		JSONObject output=super.toJSON();
+		output.put("weapon",weapon.toJSON());
+		output.put("armor", armor.toJSON());
+		return output;
 	}
 
 }

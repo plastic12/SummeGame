@@ -1,10 +1,15 @@
 package main;
 
+import org.json.simple.JSONObject;
+
 public class Monsters extends Party implements Event{
 
 	private Monsters(int x, int y) {
 		super(x, y);
 		// TODO Auto-generated constructor stub
+	}
+	public Monsters(JSONObject input) {
+		super(input);
 	}
 	public static Monsters getCentaur(int x, int y) {
 		Monsters output=new Monsters(x,y);
@@ -23,6 +28,12 @@ public class Monsters extends Party implements Event{
 	@Override
 	public void event(MainChar c) {
 		Main.battle(this);
+	}
+	@SuppressWarnings("unchecked")
+	public JSONObject toJSON() {
+		JSONObject output=super.toJSON();
+		output.put("classType",ObjTile.MONSTERS);
+		return output;
 	}
 	
 }

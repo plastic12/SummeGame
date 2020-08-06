@@ -1,4 +1,4 @@
-package main;
+package tool;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -17,11 +17,17 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import main.DialogObj;
+import main.Monsters;
+import main.ObjTile;
+import main.Position;
+import main.Teleport;
+
 
 public class ToolMain {
 	
 	public static void main(String[] args) throws Exception {
-		test();
+		makeObj02();
 	}
 	public static void test() throws URISyntaxException {
 		TreeMap<Position,Position> map=new TreeMap<Position,Position>();
@@ -65,6 +71,43 @@ public class ToolMain {
 		out.println(map);
 		out.flush();
 		out.close();
+		
+	}
+	// objfile for map01
+	@SuppressWarnings("unchecked")
+	public static void makeObj01() throws FileNotFoundException {
+		JSONArray output=new JSONArray();
+		String filename="obj01.json";
+		
+		ArrayList<ObjTile> container=new ArrayList<ObjTile>();
+		container.add(new DialogObj("This is Torii",3,3,27));
+		container.add(Monsters.getCentaur(2, 2));
+		container.add(new Teleport(19,1,1,"map01Entry"));
+		for(ObjTile t:container) {
+			output.add(t.toJSON());
+		}
+		PrintWriter out=new PrintWriter(filename);
+		out.println(output);
+		out.flush();
+		out.close();
+		
+		
+	}
+	@SuppressWarnings("unchecked")
+	public static void makeObj02() throws FileNotFoundException {
+		JSONArray output=new JSONArray();
+		String filename="obj02.json";
+		
+		ArrayList<ObjTile> container=new ArrayList<ObjTile>();
+		container.add(new Teleport(0,4,0,"map02Entry"));
+		for(ObjTile t:container) {
+			output.add(t.toJSON());
+		}
+		PrintWriter out=new PrintWriter(filename);
+		out.println(output);
+		out.flush();
+		out.close();
+		
 		
 	}
 	

@@ -34,7 +34,7 @@ public class BGLayer extends Layer{
 	public BGLayer(JSONObject input) {
 		super(((Long)input.get("width")).intValue(),((Long)input.get("height")).intValue());
 		wholemap=new int[width][height];
-		JSONArray data=(JSONArray)input.get("bglayer");
+		JSONArray data=(JSONArray)input.get("LayerBG");
 		@SuppressWarnings("unchecked")
 		Iterator<Long>iter=data.iterator();
 		for(int j=0;j<height;j++) {
